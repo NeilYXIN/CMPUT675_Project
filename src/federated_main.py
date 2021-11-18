@@ -13,6 +13,7 @@ from tqdm import tqdm
 import torch
 from tensorboardX import SummaryWriter
 
+import argparse
 from options import args_parser
 from update import LocalUpdate, test_inference
 from models import MLP, CNNMnist, CNNFashion_Mnist, CNNCifar
@@ -29,9 +30,10 @@ if __name__ == '__main__':
     args = args_parser()
     exp_details(args)
 
-    if args.gpu_id:
-        torch.cuda.set_device(args.gpu_id)
     device = 'cuda' if args.gpu else 'cpu'
+
+    if args.gpu:
+        torch.cuda.set_device(args.gpu)
 
     # load dataset and user groups
     train_dataset, test_dataset, user_groups = get_dataset(args)
