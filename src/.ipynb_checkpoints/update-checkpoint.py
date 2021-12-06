@@ -5,7 +5,7 @@
 import torch
 from torch import nn
 from torch.utils.data import DataLoader, Dataset
-
+import numpy as np
 
 class DatasetSplit(Dataset):
     """An abstract Dataset class wrapped around Pytorch Dataset class.
@@ -24,14 +24,18 @@ class DatasetSplit(Dataset):
 
 
 class LocalUpdate(object):
-    def __init__(self, args, dataset, idxs, logger):
+    def __init__(self, args, dataset, idxs, logger, noise_level, seed):
         self.args = args
         self.logger = logger
+        # np.random.seed(seed)
+
+        self.noise_level=noise_level
         self.trainloader, self.validloader, self.testloader = self.train_val_test(
             dataset, list(idxs))
         self.device = 'cuda' if args.gpu else 'cpu'
         # Default criterion set to NLL loss function
         self.criterion = nn.NLLLoss().to(self.device)
+
 
     def train_val_test(self, dataset, idxs):
         """
@@ -67,24 +71,34 @@ class LocalUpdate(object):
         for iter in range(self.args.local_ep):
             batch_loss = []
             for batch_idx, (images, labels) in enumerate(self.trainloader):
+                noises=np.random.normal(loc=1.19865, scale=self.noise_level, size=images.size()).astype('f')
+                images= np.add(images, noises)
                 images, labels = images.to(self.device), labels.to(self.device)
+                # print(torch.min(images))
+                # print(torch.max(images))
 
+                
                 model.zero_grad()
                 log_probs = model(images)
                 loss = self.criterion(log_probs, labels)
                 loss.backward()
                 optimizer.step()
 
-                if self.args.verbose and (batch_idx % 10 == 0):
-                    print('| Global Round : {} | Local Epoch : {} | [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                        global_round, iter, batch_idx * len(images),
-                        len(self.trainloader.dataset),
-                        100. * batch_idx / len(self.trainloader), loss.item()))
+                # if self.args.verbose and (batch_idx % 500 == 0):
+                #     print('| Global Round : {} | Local Epoch : {} | [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                #         global_round, iter, batch_idx * len(images),
+                #         len(self.trainloader.dataset),
+                #         100. * batch_idx / len(self.trainloader), loss.item()))
                 self.logger.add_scalar('loss', loss.item())
                 batch_loss.append(loss.item())
             epoch_loss.append(sum(batch_loss)/len(batch_loss))
+            
+        # local_model = LocalUpdate(args=args, dataset=train_dataset,
+        #                           idxs=user_groups[idx], logger=logger)
+        test_acc, test_loss = self.inference(model=model)
+        print("test_accu:", test_acc, " test loss:", test_loss)
 
-        return model.state_dict(), sum(epoch_loss) / len(epoch_loss)
+        return model.state_dict(), sum(epoch_loss) / len(epoch_loss), test_acc
 
     def inference(self, model):
         """ Returns the inference accuracy and loss.
