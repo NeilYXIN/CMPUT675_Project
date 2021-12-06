@@ -1,4 +1,9 @@
-# Federated-Learning (PyTorch)
+# Online Federated-Learning with Different Participant Selection Strategies (PyTorch)
+
+This work is based on the [Federated-Learning (PyTorch)](https://github.com/AshwinRJ/Federated-Learning-PyTorch).
+
+
+Below is the README from the original repo and hasn't been updated.
 
 Implementation of the vanilla federated learning paper : [Communication-Efficient Learning of Deep Networks from Decentralized Data](https://arxiv.org/abs/1602.05629).
 
