@@ -2,10 +2,14 @@
 
 This work is based on the [Federated-Learning (PyTorch)](https://github.com/AshwinRJ/Federated-Learning-PyTorch).
 
+Implementations are under the /src folder. 
+* The federated_main_budgeted.ipynb implements the online participant selection algorithm in the paper: [Budgeted Online Selection of Candidate IoT Clients to Participate in Federated Learning](https://ieeexplore.ieee.org/abstract/document/9249424)
+* The federated_main.ipynb implements the offline random participant selection algorithm.
 
-Below is the README from the original repo and hasn't been updated.
+Below is the README from the original repo.
+## README-Federated-Learning (PyTorch)
 
-Implementation of the vanilla federated learning paper : [Communication-Efficient Learning of Deep Networks from Decentralized Data](https://arxiv.org/abs/1602.05629).
+Implementation of the vanilla federated learning paper: [Communication-Efficient Learning of Deep Networks from Decentralized Data](https://arxiv.org/abs/1602.05629).
 
 
 Experiments are produced on MNIST, Fashion MNIST and CIFAR10 (both IID and non-IID). In case of non-IID, the data amongst the users can be split equally or unequally.
