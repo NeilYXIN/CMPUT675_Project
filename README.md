@@ -1,13 +1,31 @@
-# Online Federated-Learning with Different Participant Selection Strategies (PyTorch)
+# README
+
+This repo contains all the source code for CMPUT 675: 
+- The programming part of the homework assignment is under the /Assignment folder.
+- The implementation of the course project is under the /Project folder.
+
+# Part I. Assignment
+
+Implementations are IPython notebooks (.ipynb) under the /Assignment folder.
+
+Offline solvers use the knapsack solvers from [Google OR-Tools](https://developers.google.com/optimization/bin/knapsack#complete-programs).
+
+## Requirments
+* Python3
+* Google OR-Tools for Python: [Installation](https://developers.google.com/optimization/install)
+
+
+# Part II. Project
+## Title: Online Federated-Learning with Different Participant Selection Strategies (PyTorch)
 
 This work is based on the [Federated-Learning (PyTorch)](https://github.com/AshwinRJ/Federated-Learning-PyTorch).
 
-Implementations are under the /src folder. 
+Implementations are under the /Project/src folder. 
 * The federated_main_budgeted.ipynb implements the online participant selection algorithm in the paper: [Budgeted Online Selection of Candidate IoT Clients to Participate in Federated Learning](https://ieeexplore.ieee.org/abstract/document/9249424)
 * The federated_main.ipynb implements the offline random participant selection algorithm.
 
 Below is the README from the original repo.
-## README-Federated-Learning (PyTorch)
+## README for Federated-Learning (PyTorch)
 
 Implementation of the vanilla federated learning paper: [Communication-Efficient Learning of Deep Networks from Decentralized Data](https://arxiv.org/abs/1602.05629).
 
